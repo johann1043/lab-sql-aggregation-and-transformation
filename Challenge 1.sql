@@ -23,23 +23,25 @@
 
     # 2.2 Retrieve rental information and add two additional columns to show the month and weekday of the rental. Return 20 rows of results.
     
-    SELECT DATE_FORMAT(rental_date, '%M') AS Month,
-	       DATE_FORMAT(rental_date, '%W') AS Weekday
-           
-    FROM rental
-    LIMIT 20;
+   SELECT DATE_FORMAT(rental_date, '%M') AS Month,
+       DATE_FORMAT(rental_date, '%W') AS Weekday,
+       CASE
+           WHEN DATE_FORMAT(rental_date, '%W') IN ('Saturday', 'Sunday') THEN 'weekend'
+           ELSE 'workday'
+       END AS DAY_TYPE
+FROM rental
+LIMIT 20;
+
+
 # 3. You need to ensure that customers can easily access information about the movie collection. To achieve this, retrieve the film titles and their rental duration. If any rental duration value is NULL, replace it with the string 'Not Available'. Sort the results of the film title in ascending order.
 
     # Please note that even if there are currently no null values in the rental duration column, the query should still be written to handle such cases in the future.
     # Hint: Look for the IFNULL() function.
-    
-    Select title, length,
-    CASE 
-        WHEN length is null THEN 'Not Available'
-		ELSE length
-    END AS new_length
-    FROM film
-    ORDER BY length ASC;
+SELECT ifnull(length, 'Not Available') AS new_length
+FROM film
+ORDER BY length ASC;
+
+
 
 
     
